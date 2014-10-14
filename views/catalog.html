@@ -1,0 +1,80 @@
+<div class="container">
+    <h3>Ассортимент</h3>
+    <div class="row">
+        <button class="btn btn-default" ng-class="{ 'btn-primary': orderByField === 'name' }" ng-click="sortBy('name')">
+            Марка
+            <span ng-show="orderByField === 'name'" class="glyphicon" ng-class="{ 'glyphicon-sort-by-attributes': !reverseSort, 'glyphicon-sort-by-attributes-alt': reverseSort }"></span>
+        </button>
+        <button class="btn btn-default" ng-class="{ 'btn-primary': orderByField === 'price' }" ng-click="sortBy('price')">
+            Цена
+            <span ng-show="orderByField === 'price'" class="glyphicon" ng-class="{ 'glyphicon-sort-by-attributes': !reverseSort, 'glyphicon-sort-by-attributes-alt': reverseSort }"></span>
+        </button>
+
+        <form class="pull-right">
+            <input type="text" class="form-control" placeholder="Поиск..." ng-model="searchText">
+        </form>
+    </div>
+
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="item in catalog | filter:searchText | orderBy:orderByField:reverseSortString">
+                <div ng-show="!(isEditing && currIndex === $index)">
+                    <h4> {{ item.name }} </h4>
+                    <span class="btn btn-default pull-right glyphicon glyphicon-remove" title="Удалить" ng-click="removeItem($index, item)"></span>
+                    <span class="btn btn-default pull-right glyphicon glyphicon-pencil" title="Отредактировать" ng-click="editItem($index, item)"></span>
+                    <img src="{{ item.photoUrl }}" alt="{{ item.name }}">
+                    <p>{{ item.description }}</p>
+                    <p class="lead">Цена: {{ item.price }} руб.</p>
+                </div>
+                <div ng-show="isEditing && currIndex === $index">
+                    <form role="form">
+                        <h4>Отредактировать запись</h4>
+                        <hr>
+                        <div class="form-group">
+                            <label for="name" class="control-label">Наименование</label>
+                            <input id="name" type="text" class="form-control" ng-model="currItem.name">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo-url" class="control-label">URL фото</label>
+                            <input id="photo-url" type="text" class="form-control" ng-model="currItem.photoUrl">
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="control-label">Описание</label>
+                            <textarea id="desctiption" rows="5" class="form-control" ng-model="currItem.description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="price" class="control-label">Цена, руб.</label>
+                            <input id="price" type="number" class="form-control" ng-model="currItem.price">
+                        </div>
+                        <button class="btn btn-primary" ng-click="saveItem()">Сохранить</button>
+                        <button class="btn btn-default" ng-click="cancelItem()">Отмена</button>
+                    </form>
+                </div>
+            </li>
+
+            <li class="list-group-item">
+                <form role="form">
+                    <h4>Добавить телефон</h4>
+                    <hr>
+                    <div class="form-group">
+                        <label for="new-name" class="control-label">Наименование</label>
+                        <input id="new-name" type="text" class="form-control" ng-model="newItem.name">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-photo-url" class="control-label">URL фото</label>
+                        <input id="new-photo-url" type="text" class="form-control" ng-model="newItem.photoUrl">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-description" class="control-label">Описание</label>
+                        <textarea id="new-desctiption" row="5" class="form-control" ng-model="newItem.description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-price" class="control-label">Цена, руб.</label>
+                        <input id="new-price" type="number" class="form-control" ng-model="newItem.price">
+                    </div>
+                    <button class="btn btn-success" ng-click="addItem()">Добавить</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
